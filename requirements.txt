@@ -39,3 +39,4 @@ sqlparse==0.4.1
 urllib3==1.26.4
 virtualenv==20.4.2
 virtualenv-clone==0.5.4
+whitenoise==5.2.0
