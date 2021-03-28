@@ -1,7 +1,7 @@
 {% extends 'store/main.html'%}
 {%load static%}
 {% block content %}
-    <div class="row page" id= 'page'>
+    <div class="row page" >
       <div class="col-lg-6 ">
         <div class="box-element" id= "form-wrapper">
           <form id="form" >
@@ -72,8 +72,12 @@
    <div class="col-lg-6 ">
      <h1 id= 'completePage' class = " hidden"> Thank you for your order!! </h1>
     </div>
+
+    <!--- JAVASCRIPT FUNCTIONS SPECIFIC TO CHECKOUT--->
    <script type="text/javascript">
      var shipping = '{{order.shipping}}'
+     var total = '{{order.get_cart_total}}'
+
      if (shipping == 'False'){
        document.getElementById('shipping-info').innerHTML = ''
      }
@@ -102,9 +106,59 @@
        submitFormData()
      })
 
-     function submitFormData(){
-       document.getElementById('page').classList.add("hidden");  //Temperarily making mpage content disappear
-        document.getElementById('completePage').classList.remove("hidden");
+     function submitFormData(){                     //info being sent to back end after submit button is clicked
+       console.log("payment button clickes")
+
+       var userformData = {       //user info send to back
+         'name' : null,
+         'email': null,
+         'total': total,
+       }
+
+       var shippingInfo = {
+         'address' : null,
+         'city' : null,
+         'state': null,
+         'zipcode' : null,
+       }
+
+       if (shipping != 'False'){        //Shipping infor being sent to back
+         shippingInfo.address = form.address.value
+         shippingInfo.city = form.city.value
+         shippingInfo.state = form.state.value
+         //shippingInfo.zipcode = form.zipcode.value
+
+       }
+
+       if (user == 'AnonymousUser'){
+         userformData.name = form.name.value
+         userformData.email = form.email.value
+       }
+
+       // fetch token to send json message to back end for
+
+       var url = '/process_order/'
+
+       fetch(url, {        //fect set to url
+         method: 'POST',   // fetch type post
+         headers:{
+           'Content-Type': 'application/json',
+           'X-CSRFtoken':csrftoken,      // TOKEN CALL
+         },
+         body: JSON.stringify({'form':userformData, 'shipping':shippingInfo})      //data passed
+       })
+
+       .then((response) => response.json()) //response intp json
+       .then((data) => {
+         console.log('Success:', data);  //console response
+         alert("Transaction completed");   // alert message
+
+         cart = {}
+         document.cookie = 'cart' + JSON.stringify(cart) + ";domain=;path=/"  //remove cookies after order is complete
+
+         window.location.href = "{% url 'store' %}"   //send user to home page
+       })
+
      }
 
    </script>

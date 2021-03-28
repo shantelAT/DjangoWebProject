@@ -9,7 +9,8 @@ for(var i = 0; i< updateBtns.length; i++){
 
     console.log('USER:', user)
     if(user === 'AnonymousUser'){
-      console.log('Not logded in')
+      addCookieItem(productId, action)
+
     }else{
       updateUserOrder(productId, action)
     }
@@ -17,10 +18,35 @@ for(var i = 0; i< updateBtns.length; i++){
   })
 }
 
+function addCookieItem(productId, action){
+  console.log('Not logded in')
+    if (action == 'add'){
+      if (cart[productId] == undefined){
+        cart[productId] = {'quantity': 1}
+      }else {
+          cart[productId]['quantity'] += 1
+      }
+    }
+      if (action == 'remove'){
+        cart[productId]['quantity'] -= 1
+
+        if(cart[productId]['quantity'] <= 0){
+          console.log("remove item")
+          delete cart[productId]
+        }
+      }
+      console.log('cart:', cart)
+      document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+      location.reload()
+  }
+
+
 function updateUserOrder(productId, action){
     console.log('User authenticated sending data...')
 
     var url = '/update_item/'
+
+    // fetch token to send json message to back end for  productid and action(remove or add)
 
     fetch(url, {        //fect set to url
       method: 'POST',   // fetch type post
