@@ -1,0 +1,9 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[gc]
+	auto = 500
+	autopacklimit = 5
+	pruneexpire = now
+	autodetach = false
