@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import django_heroku
 import os
 from pathlib import Path
 
@@ -144,3 +145,5 @@ AWS_DEFAULT_ACL=None
 DEFAULT_FILE_STORAGE='storages.backends.s3boto3.S3Boto3Storage'
 #export SECRET_KEY="f619cfb23e9b43603aa522b3d488504d3d32eb1c94d3f7fd430a3d2fdabde17f"
 #export DEBUG_VALUE="True"
+
+django_heroku.settings(locals())
