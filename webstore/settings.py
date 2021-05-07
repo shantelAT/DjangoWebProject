@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '*o6*s%3q)$(ge8p)s3cwhnzd3*7^*xo-y#t#13$add^6!c(*ls'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['shantelwebstore.herokuapp.com']
 
